@@ -37,10 +37,16 @@ drawTurrets = ->
   context.fillStyle = 'green'
   context.fill()
 
-
 moveUnit = ->
-  if game.unit.x < game.board.w
-    game.unit.x+=.5
+  unit = game.unit
+  if unit.x < game.board.w
+    blocked = false
+    for turret in game.turrets
+      blocked = turret.x <= unit.x+.5 <=turret.x+turret.w and turret.y <= unit.y <=turret.y+turret.h
+    if blocked
+      unit.y+=.5
+    else
+      unit.x+=.5
 
 draw = ->
   game.context.clearRect game.canvas.x, game.canvas.y, game.canvas.width, game.canvas.height
@@ -133,7 +139,7 @@ init = ->
         mainButton.innerHTML = 'Start !'
         mainButton.onclick = -> game.start()
     unit:
-      x: -10
+      x: -100
       y: 200
     ui:
       button:

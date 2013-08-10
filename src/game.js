@@ -60,8 +60,21 @@
   };
 
   moveUnit = function() {
-    if (game.unit.x < game.board.w) {
-      return game.unit.x += .5;
+    var blocked, turret, unit, _i, _len, _ref, _ref1, _ref2;
+
+    unit = game.unit;
+    if (unit.x < game.board.w) {
+      blocked = false;
+      _ref = game.turrets;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        turret = _ref[_i];
+        blocked = (turret.x <= (_ref1 = unit.x + .5) && _ref1 <= turret.x + turret.w) && (turret.y <= (_ref2 = unit.y) && _ref2 <= turret.y + turret.h);
+      }
+      if (blocked) {
+        return unit.y += .5;
+      } else {
+        return unit.x += .5;
+      }
     }
   };
 
@@ -211,7 +224,7 @@
         };
       },
       unit: {
-        x: -10,
+        x: -100,
         y: 200
       },
       ui: {
