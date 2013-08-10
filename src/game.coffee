@@ -1,3 +1,4 @@
+autostart = true
 
 drawGrid = ->
   game.context.beginPath()
@@ -11,6 +12,10 @@ drawGrid = ->
   game.context.closePath()
 
 drawUI = ->
+  context = game.context
+  context.rect 690, 190, 20, 20
+  context.fillStyle = 'green'
+  context.fill()
 
 drawUnit = ->
   unit = game.unit
@@ -35,21 +40,28 @@ draw = ->
 update = ->
   moveUnit()
 
+canvas = document.createElement 'canvas'
+canvas.width = 800
+canvas.height = 401
+canvas.x = 0
+canvas.y = 0
+document.body.appendChild canvas
+
+context = canvas.getContext '2d'
+
+mainButton = document.createElement 'a'
+mainButton.innerHTML = 'Start !'
+mainButton.onclick = -> game.start()
+document.body.appendChild mainButton
+
+###
+resetButton = document.createElement 'a'
+resetButton.innerHTML = 'Reset'
+resetButton.onclick = -> game.reset()
+document.body.appendChild resetButton
+###
+
 init = ->
-  canvas = document.createElement 'canvas'
-  canvas.width = 800
-  canvas.height = 401
-  canvas.x = 0
-  canvas.y = 0
-  document.body.appendChild canvas
-
-  context = canvas.getContext '2d'
-
-  mainButton = document.createElement 'a'
-  mainButton.innerHTML = 'Start !'
-  mainButton.onclick = -> game.start()
-  document.body.appendChild mainButton
-
   game =
     canvas: canvas
     context: context
@@ -75,3 +87,4 @@ init = ->
 
 window.game = game = init()
 
+game.start() if autostart
