@@ -43,6 +43,8 @@ moveUnit = ->
     blocked = false
     for turret in game.turrets
       blocked = turret.x <= unit.x+.5 <=turret.x+turret.w and turret.y <= unit.y <=turret.y+turret.h
+      if blocked
+        break
     if blocked
       unit.y+=.5
     else
