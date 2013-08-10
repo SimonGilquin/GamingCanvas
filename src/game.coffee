@@ -9,11 +9,28 @@ drawGrid = ->
     game.context.lineTo game.board.w + .5, y + .5
   game.context.stroke()
   game.context.closePath()
+
+drawUnit = ->
+  unit = game.unit
+  context = game.context
+  context.beginPath()
+  context.arc unit.x, unit.y, 5, 0, 2 * Math.PI, false
+  context.fillStyle = 'red'
+  context.fill()
+  context.stroke()
+  context.closePath()
+
+moveUnit = ->
+  if game.unit.x < game.board.w
+    game.unit.x+=.5
+
 draw = ->
+  game.context.clearRect game.canvas.x, game.canvas.y, game.canvas.width, game.canvas.height
   drawGrid()
+  drawUnit()
 
 update = ->
-
+  moveUnit()
 
 init = ->
   canvas = document.createElement 'canvas'
@@ -33,8 +50,11 @@ init = ->
       w: 601
       h: 401
     start: ->
-      setTimeout draw, 10
-      setTimeout update, 1
+      setInterval draw, 10
+      setInterval update, 1
+    unit:
+      x: -10
+      y: 200
 
 
 window.game = game = init()
