@@ -10,6 +10,8 @@ drawGrid = ->
   game.context.stroke()
   game.context.closePath()
 
+drawUI = ->
+
 drawUnit = ->
   unit = game.unit
   context = game.context
@@ -27,6 +29,7 @@ moveUnit = ->
 draw = ->
   game.context.clearRect game.canvas.x, game.canvas.y, game.canvas.width, game.canvas.height
   drawGrid()
+  drawUI()
   drawUnit()
 
 update = ->
@@ -41,6 +44,12 @@ init = ->
   document.body.appendChild canvas
 
   context = canvas.getContext '2d'
+
+  mainButton = document.createElement 'a'
+  mainButton.innerHTML = 'Start !'
+  mainButton.onclick = -> game.start()
+  document.body.appendChild mainButton
+
   game =
     canvas: canvas
     context: context
@@ -50,8 +59,15 @@ init = ->
       w: 601
       h: 401
     start: ->
-      setInterval draw, 10
-      setInterval update, 1
+      drawId = setInterval draw, 10
+      updateId = setInterval update, 1
+      mainButton.innerHTML = 'Pause...'
+      mainButton.onclick = -> game.pause()
+      @pause = ->
+        clearInterval drawId
+        clearInterval updateId
+        mainButton.innerHTML = 'Start !'
+        mainButton.onclick = -> game.start()
     unit:
       x: -10
       y: 200
@@ -59,4 +75,3 @@ init = ->
 
 window.game = game = init()
 
-game.start()
